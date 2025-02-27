@@ -1,0 +1,101 @@
+﻿@model ProductsCategoriesDto
+
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            @if (Model.Categories is not null)
+            {
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="Index" class="nav-link">All</a>
+                    </li>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Index" asp-route-categoryId=@item.Id  class="nav-link">@item.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+
+        </div>
+    </div>
+</nav>
+
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Step It E-Shop</h1>
+        </div>
+    </div>
+</header>
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+
+            @if (Model.Products.Any())
+            {
+
+
+                @foreach (var product in @Model.Products)
+                {
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img style="height:200px; object-fit:cover" class="card-img-top" src="~/images/@product.ImageUrl" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">@product.Name</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        @if (product.Rating is not null)
+                                        {
+
+                                            @for (int i = 0; i < product.Rating; i++)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                        }
+                                    </div>
+                                    <!-- Product price-->
+                                    <span class="text-muted">@product.Price $</span>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id">
+                                        Details
+                                    </a>
+                                </div>
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto" asp-controller="Home" asp-action="AddToCart" asp-route-id="@product.Id">
+                                        Add to cart
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            }
+
+        </div>
+    </div>
+</section>
